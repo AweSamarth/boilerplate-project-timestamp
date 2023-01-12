@@ -24,23 +24,33 @@ app.get("/", function (req, res) {
 // your first API endpoint...
 app.get("/api/:hello", function (req, res) {
   let obj
-  if (req.params.hello.includes("-")) {
     let newdate = new Date(req.params.hello);
     console.log(newdate.toUTCString());
     if (newdate.toUTCString() == "Invalid Date") {
-      obj = { error: newdate.toUTCString() };
+
+      let newer= Number(req.params.hello)
+
+      let newerDate = new Date(newer)
+      if (newerDate.toUTCString()=="Invalid Date"){
+        console.log(newerDate)
+        obj = { error: newdate.toUTCString() };
+
+      }
+      else{
+        console.log("This one", newerDate)
+        obj = {utc:newerDate.toUTCString(), unix:Date.parse(newerDate)}
+      }
+
+      
     } else {
       obj = {utc:newdate.toUTCString(), unix:Date.parse(newdate)}
     }
     res.json(obj)
-  }
-  else{
-    let newdate=new Date(Number(req.params.hello))
-    console.log("pohocha")
-    console.log(newdate.toUTCString())
-    console.log(newdate.toISOString())
-    res.json({utc:newdate.toUTCString(), unix:Number(req.params.hello)})
-  }
+  // }
+  // else{
+  //   let newdate=new Date(Number(req.params.hello))
+  //   res.json({utc:newdate.toUTCString(), unix:Number(req.params.hello)})
+  // }
 
 });
 
